@@ -1,6 +1,9 @@
 import os
 import unittest
 
+from src.palindromeDetect import PalindromeDetect
+
+
 class UnitTest(unittest.TestCase):
 
     def test_mirror(self):
@@ -8,7 +11,7 @@ class UnitTest(unittest.TestCase):
         chain = "test"
 
         # QUAND on saisit une chaîne
-        result = PalindormeDetect(chain)
+        result = PalindromeDetect.detect(chain)
 
         # ALORS celle-ci est renvoyée en miroir
         want = chain[::-1]
@@ -20,7 +23,7 @@ class UnitTest(unittest.TestCase):
         chain = "kayak"
 
         # QUAND on saisit un palindrome
-        result = PalindromeDetect(chain)
+        result = PalindromeDetect.detect(chain)
 
         # ALORS celui-ci est renvoyé ET "Bien dit" est envoyé ensuite
         expected = chain + os.linesep + "Bien dit!"
@@ -33,7 +36,7 @@ class UnitTest(unittest.TestCase):
         expected = "Bonjour"
 
         # QUAND on saisit une chaîne
-        result = PalindormeDetect(chain)
+        result = PalindromeDetect.detect(chain)
 
         # ALORS "Bonjour" est envoyé avant toute réponse
         firstLine = result.split(os.linesep)[0]
@@ -46,8 +49,11 @@ class UnitTest(unittest.TestCase):
         expected = "Au revoir"
 
         # QUAND on saisit une chaîne
-        result = PalindormeDetect(chain)
+        result = PalindromeDetect.detect(chain)
 
         # ALORS "Au revoir" est envoyé en dernier
-        lastLine = result.split(os.linesep)[1]
+        lastLine = result.split(os.linesep)[-1]
         self.assertEqual(lastLine, expected)
+
+if __name__ == '__main__':
+    unittest.main()
