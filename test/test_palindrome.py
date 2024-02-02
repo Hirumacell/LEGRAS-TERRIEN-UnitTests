@@ -56,39 +56,63 @@ class UnitTest(unittest.TestCase):
 
 
     def test_helloInFirst(self):
-        parameters = [[FrenchLanguage(), "Bonjour"], [EnglishLanguage(), "Hello"]]
+        parameters = [
+            [FrenchLanguage(), TimeDay.Default, "Bonjour"],
+            [FrenchLanguage(), TimeDay.Morning, "Bonjour"],
+            [FrenchLanguage(), TimeDay.Afternoon, "Bonjour"],
+            [FrenchLanguage(), TimeDay.Evening, "Bonsoir"],
+            [FrenchLanguage(), TimeDay.Night, "Bonsoir"],
+            [EnglishLanguage(), TimeDay.Default, "Hello"],
+            [EnglishLanguage(), TimeDay.Morning, "Good morning"],
+            [EnglishLanguage(), TimeDay.Afternoon, "Good afternoon"],
+            [EnglishLanguage(), TimeDay.Evening, "Good evening"],
+            [EnglishLanguage(), TimeDay.Night, "Good night"]
+        ]
 
         for param in parameters:
             with self.subTest(param[0]):
                 # ETANT DONNE une chaîne ET l'utilisateur parle une langue
                 chain = "test"
                 language = param[0]
+                timeDay = param[1]
 
                 # QUAND on saisit une chaîne
-                build = PalindromeDetectBuilder().choosenLanguage(language).build()
+                build = PalindromeDetectBuilder().choosenLanguage(language).choosenTimeDay(timeDay).build()
                 result = build.detect(chain)
 
                 # ALORS <Bonjour> de cette langue est envoyé avant toute réponse
                 firstLine = result.split(os.linesep)[0]
-                self.assertEqual(firstLine, param[1])
+                self.assertEqual(firstLine, param[2])
 
 
     def test_GoodbyeInLast(self):
-        parameters = [[FrenchLanguage(), "Au revoir"], [EnglishLanguage(), "Goodbye"]]
+        parameters = [
+            [FrenchLanguage(), TimeDay.Default, "Au revoir"],
+            [FrenchLanguage(), TimeDay.Morning, "Bonne journée"],
+            [FrenchLanguage(), TimeDay.Afternoon, "Bon après-midi"],
+            [FrenchLanguage(), TimeDay.Evening, "Bonne soirée"],
+            [FrenchLanguage(), TimeDay.Night, "Bonne nuit"],
+            [EnglishLanguage(), TimeDay.Default, "Goodbye"],
+            [EnglishLanguage(), TimeDay.Morning, "Goodbye"],
+            [EnglishLanguage(), TimeDay.Afternoon, "Goodbye"],
+            [EnglishLanguage(), TimeDay.Evening, "Good night"],
+            [EnglishLanguage(), TimeDay.Night, "Good night"]
+        ]
 
         for param in parameters:
             with self.subTest(param[0]):
                 # ETANT DONNE une chaîne ET l'utilisateur parle une langue
                 chain = "test"
                 language = param[0]
+                timeDay = param[1]
 
                 # QUAND on saisit une chaîne
-                build = PalindromeDetectBuilder().choosenLanguage(language).build()
+                build = PalindromeDetectBuilder().choosenLanguage(language).choosenTimeDay(timeDay).build()
                 result = build.detect(chain)
 
                 # ALORS <Au revoir> de cette langue est envoyé en dernier
                 lastLine = result.split(os.linesep)[-1]
-                self.assertEqual(lastLine, param[1])
+                self.assertEqual(lastLine, param[2])
 
 if __name__ == '__main__':
     unittest.main()
