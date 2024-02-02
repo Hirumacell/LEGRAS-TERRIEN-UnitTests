@@ -1,13 +1,22 @@
 import os
 
 class PalindromeDetect:
-    def __init__(self, language):
+    def __init__(self, language, timeDay):
         self.__language = language
+        self.__timeDay = timeDay
 
     def detect(self, chain):
         mirror = chain[::-1]
 
-        start = (self.__language.salutation() + os.linesep + mirror + os.linesep)
+        start = (self.salutation() + os.linesep + mirror + os.linesep)
 
-        return (start + self.__language.congrats() if chain == mirror else start) + os.linesep + self.__language.goodbye()
-    
+        return (start + self.congrats() if chain == mirror else start) + os.linesep + self.goodbye()
+
+    def congrats(self):
+        return self.__language.congrats()
+
+    def salutation(self):
+        return self.__language.salutation(self.__timeDay)
+
+    def goodbye(self):
+        return self.__language.goodbye(self.__timeDay)

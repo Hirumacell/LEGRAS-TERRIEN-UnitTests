@@ -3,6 +3,7 @@ import unittest
 
 from englishLanguage import EnglishLanguage
 from frenchLanguage import FrenchLanguage
+from timeDay import TimeDay
 from utilities.languageSpy import LanguageSpy
 from utilities.palindromeDetecteurBuilder import PalindromeDetectBuilder
 
