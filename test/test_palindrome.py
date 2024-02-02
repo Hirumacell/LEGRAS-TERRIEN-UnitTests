@@ -1,7 +1,10 @@
 import os
 import unittest
 
-from src.palindromeDetect import PalindromeDetect
+from englishLanguage import EnglishLanguage
+from frenchLanguage import FrenchLanguage
+from utilities.languageSpy import LanguageSpy
+from utilities.palindromeDetecteurBuilder import PalindromeDetectBuilder
 
 
 class UnitTest(unittest.TestCase):
@@ -11,15 +14,16 @@ class UnitTest(unittest.TestCase):
         chain = "test"
 
         # QUAND on saisit une chaîne
-        result = PalindromeDetect.detect(chain)
+        build = PalindromeDetectBuilder().buildDefault()
+        result = build.detect(chain)
 
         # ALORS celle-ci est renvoyée en miroir
-        want = chain[::-1]
-        self.assertIn(want, result)
+        excepted = chain[::-1]
+        self.assertIn(excepted, result)
 
 
     def test_palindrome(self):
-        parameters = [[FrenchLanguage(), "Bien dit !"], [EnglishLanguage(), "Well said !"]]
+        parameters = [[FrenchLanguage(), "Bien dit!"], [EnglishLanguage(), "Well said!"]]
 
         for param in parameters:
             with self.subTest(param[0]):
@@ -28,11 +32,27 @@ class UnitTest(unittest.TestCase):
                 language = param[0]
 
                 # QUAND on saisit un palindrome
-                result = PalindromeDetect.choosenLanguage(language).detect(chain)
+                build = PalindromeDetectBuilder().choosenLanguage(language).build()
+                result = build.detect(chain)
 
                 # ALORS celui-ci est renvoyé ET <Bien dit> de cette langue est envoyé
                 expected = chain + os.linesep + param[1]
                 self.assertIn(expected, result)
+
+
+    def test_noPalindrome(self):
+        # ETANT DONNE un non-palindrome
+        chain = "test"
+
+        # QUAND on saisit la chaîne
+        language = LanguageSpy()
+        build = PalindromeDetectBuilder().buildDefault()
+
+        build.detect(chain)
+
+        # ALORS on ne le félicite pas
+        self.assertFalse(language.congralutationsConsulted())
+
 
 
     def test_helloInFirst(self):
@@ -45,7 +65,8 @@ class UnitTest(unittest.TestCase):
                 language = param[0]
 
                 # QUAND on saisit une chaîne
-                result = PalindromeDetect.choosenLanguage(language).detect(chain)
+                build = PalindromeDetectBuilder().choosenLanguage(language).build()
+                result = build.detect(chain)
 
                 # ALORS <Bonjour> de cette langue est envoyé avant toute réponse
                 firstLine = result.split(os.linesep)[0]
@@ -62,7 +83,8 @@ class UnitTest(unittest.TestCase):
                 language = param[0]
 
                 # QUAND on saisit une chaîne
-                result = PalindromeDetect.choosenLanguage().detect(chain)
+                build = PalindromeDetectBuilder().choosenLanguage(language).build()
+                result = build.detect(chain)
 
                 # ALORS <Au revoir> de cette langue est envoyé en dernier
                 lastLine = result.split(os.linesep)[-1]

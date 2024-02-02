@@ -1,10 +1,13 @@
 import os
 
 class PalindromeDetect:
-    @classmethod
-    def detect(cls, chain):
+    def __init__(self, language):
+        self.__language = language
+
+    def detect(self, chain):
         mirror = chain[::-1]
 
-        start = "Bonjour" + os.linesep + mirror + os.linesep
+        start = (self.__language.salutation() + os.linesep + mirror + os.linesep)
 
-        return (start + "Bien dit!" if chain == mirror else start) + os.linesep + "Au revoir"
+        return (start + self.__language.congrats() if chain == mirror else start) + os.linesep + self.__language.goodbye()
+    
